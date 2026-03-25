@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="even">
+        <div id="wrapper"></div>
+    </div>
+    <script>
+        let employees = [
+        {
+            "surname": 'Иванов', //Фамилия
+            "name": 'Иван', //Имя
+            "patronymic": 'Иванович', //Отчество 
+            "birthday": '1987-11-30', //Дата рождения в формате ГГГГ-ММ-ДД
+            "experience": 5, //Стаж работы
+            "salary": 48200, //Зарплата гросс в месяц
+            "salary13": 3000, //Годовая премия
+            "gender": 'm', //Премия
+            "vacation": 0, //Месяц отпуска
+        },
+        {
+            "surname": 'Петров', 
+            "name": 'Петр', 
+            "patronymic": 'Петрович', 
+            "birthday": '2001-01-01',
+            "experience": 0,
+            "salary": 27600,
+            "salary13": 1000,
+            "gender": 'm',
+            "vacation": 8,
+        },
+        {
+            "surname": 'Капустина', 
+            "name": 'Ирина', 
+            "patronymic": 'Николаевна', 
+            "birthday": '1992-02-02',
+            "experience": 4,
+            "salary": 36000,
+            "salary13": 4000,
+            "gender": 'f',
+            "vacation": 3,
+        },
+        {
+            "surname": 'Билл', 
+            "name": 'Гейтс', 
+            "patronymic": '', 
+            "birthday": '1955-10-28',
+            "experience": 1,
+            "salary": 16900,
+            "salary13": 100,
+            "gender": 'm',
+            "vacation": 11,
+        },
+        {
+            "surname": 'Ложкина', 
+            "name": 'Галина', 
+            "patronymic": 'Ильинична', 
+            "birthday": '2002-01-13',
+            "experience": 1,
+            "salary": 80000,
+            "salary13": 100000,
+            "gender": 'f',
+            "vacation": 6,
+        },
+        {
+            "surname": 'Матрос', 
+            "name": 'Капитолия', 
+            "patronymic": 'Владовна', 
+            "birthday": '1975-04-20',
+            "experience": 20,
+            "salary": 90000,
+            "salary13": 4000,
+            "gender": 'f',
+            "vacation": 7,
+        },
+        {
+            "surname": 'Елисейская', 
+            "name": 'Италия', 
+            "patronymic": 'Франсовна', 
+            "birthday": '1999-08-12',
+            "experience": 3,
+            "salary": 36700,
+            "salary13": 4000,
+            "gender": 'f',
+            "vacation": 4,
+        },
+        {
+            "surname": 'Строгая', 
+            "name": 'Лада', 
+            "patronymic": '', 
+            "birthday": '1990-08-15',
+            "experience": 7,
+            "salary": 69000,
+            "salary13": 3600,
+            "gender": 'f',
+            "vacation": 9,
+        },
+        {
+            "surname": 'Император', 
+            "name": 'Павел', 
+            "patronymic": 'Григорьевич', 
+            "birthday": '1970-12-19',
+            "experience": 7,
+            "salary": 28999,
+            "salary13": 3900,
+            "gender": 'm',
+            "vacation": 1,
+        },
+        {
+            "surname": 'Ватрушкин', 
+            "name": 'Петр', 
+            "patronymic": 'Семенович', 
+            "birthday": '2000-05-13',
+            "experience": 1,
+            "salary": 200000,
+            "salary13": 0,
+            "gender": 'm',
+            "vacation": 5,
+        },
+        ];
+
+
+        function Employee(data) {
+        this.surname = data.surname;
+        this.name = data.name;
+        this.patronymic = data.patronymic;
+        this.birthday = data.birthday;
+        this.experience = data.experience;
+        this.salary = data.salary;
+        this.salary13 = data.salary13;
+        this.gender = data.gender;
+        this.vacation = data.vacation;
+        }
+
+        Employee.prototype.calculateNetSalary = function() {
+            return +(this.salary * 1.15 * .87).toFixed(2);
+        }
+
+        Employee.prototype.calculateYearSalary = function() {
+            return +(this.calculateNetSalary() * 12).toFixed(2);
+        }
+
+        Employee.prototype.calculateTaxReturn = function() {
+            return +(this.calculateYearSalary() * .13);
+        }
+
+        Employee.prototype.calculateAge = function() {
+            const today = new Date();
+            const birth = new Date(this.birthday);
+            let year = today.getFullYear() - birth.getFullYear();
+            let month = today.getMonth() - birth.getMonth();
+            if (month < 0) {
+                month += 12;
+                year--;
+            }
+            return [year, month];
+        }
+
+        Employee.prototype.remainsToPension = function() {
+            const [year, month] = this.calculateAge();
+            const months = this.gender === "m" ? 64 * 12 : 59 * 12;
+            const remainsMonth = months - year * 12 + month;
+            if (remainsMonth < 0) {
+                return [null, null];
+            }
+            if (remainsMonth % 12 === 0) {
+                return [remainsMonth/12, 0];
+            }
+            return [Math.floor(remainsMonth/12, 12 - remainsMonth % 12)];
+        }
+
+        Employee.prototype.calculateSalaryInNextYear = function() {
+            return +(this.salary * 1.078).toFixed();
+        }
+
+        Employee.prototype.printBirthdayFormat = function() {
+            const birth = new Date(this.birthday);
+            return `${birth.getDate()}.${months[birth.getMonth()][1]}.${birth.getUTCFullYear()}`;
+        }
+
+        const months = [
+            ['Январь', 'января'],
+            ['Февраль', 'февраля'],
+            ['Март', 'марта'],
+            ['Апрель', 'апреля'],
+            ['Май', 'мая'],
+            ['Июнь', 'июня'],
+            ['Июль', 'июля'],
+            ['Август', 'августа'],
+            ['Сентябрь', 'сентября'],
+            ['Октябрь', 'октября'],
+            ['Ноябрь', 'ноября'],
+            ['Декабрь', 'декабря']
+        ]
+
+        for (let i = 0; i < employees.length; i++) {
+            const employee = new Employee(employees[i]);
+            const netSalary = employee.calculateNetSalary();
+            const yearSalary = employee.calculateYearSalary();
+            const taxReturn = employee.calculateTaxReturn();
+            const salaryInNextYear = employee.calculateSalaryInNextYear();
+            const remainsToPension = employee.remainsToPension();
+            const printBirth = employee.printBirthdayFormat()
+
+
+            console.log(employee, netSalary, yearSalary, taxReturn, salaryInNextYear, remainsToPension, printBirth)
+        }
+
+       
+        let table = `<table><thead>
+            <tr>
+                <td>№</td>
+                <td>ФИО</td>
+                <td>Дата рожднения</td>
+                <td>Возраст</td>
+                <td>Зарплата гросс.</td>
+        `;
+        for (let i = 0; i < 12; i++) {
+            table += `<td>${months[i][0]}</td>`;
+        }
+        table += '</tr></thead></table>';
+        window.onload = () => {
+            document.querySelector('#wrapper').innerHTML = table;
+        }
+
+        </script>
+    </body>
+</html>
