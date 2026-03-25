@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <title>Document</title>
+    
+    <!-- Стиль внутри страницы -->
+<style>
+    body {
+        background: #008080; 
+        /* 
+        Цвет можно выбрать, набрав в Яндексе 
+        "Колдунчик цветов" 
+        */
+        
+    }
+    </style>
+<!-- Ссылка на внешний стиль -->
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <textarea>Hello World</textarea>
+    <h1>Моя первая страница</h1>
+    <div class="odd">
+        <h2 id="ball">Мячик</h2>
+        <h1><b>МЯЧИК</b></h1>
+        <b>Наша Таня громко плачет:</b><br>
+        <em>Уронила в речку мячик.</em><br>
+        -Тише, Танечка, не плачь:<br>
+        <strike>Не утонет в речке мяч.</strike><br>
+        <b>Автор: А. Л. Барто</b>
+    </div>
+    <div class="even">
+       <h2 id="source">Расписание звонков</h2>
+    </div>
+    <div class="odd">
+        <h2 id="mems">Весёлые картинки</h2>
+    </div>
+    <div class="even">
+        <h2 id="source time">Расписание пар</h2>
+    </div>
+    <div class="odd">
+        <h2 id="dairy">Дневник</h2>
+    </div>
+    <div class="even">
+        <h2 id="accountancy">Бухгалтерия</h2>
+    </div>
+
+    <div class="cat"></div>
+    <div id="cat1"></div>
+
+    <!-- #father>#son  -->
+     <div id="father">
+        <div id="son"></div>
+     </div>
+     
+     <!-- #son1+#son2+#son3 TAB -->
+     <div id="son1"></div>
+     <div id="son2"></div>
+     <div id="son3"></div>
+
+    <!--#father>.son*2 TAB --> 
+    <div id="father">
+        <div class="son"></div>
+        <div class="son"></div>
+    </div>
+    
+    <!-- #father>.son$*2 -->
+    <div id="father">
+        <div class="son1"></div>
+        <div class="son2"></div>
+    </div>
+    <!-- #father>.son$$$$*2 -->
+    <div id="father">
+        <div class="son0001"></div>
+        <div class="son0002"></div>
+    </div>
+    <!-- #father>.son$$$@4*3 TAB --> 
+    <div id="father">
+        <div class="son004"></div>
+        <div class="son005"></div>
+        <div class="son006"></div>
+    </div>
+    <!-- #cats{Котики кругом} TAB --> 
+    <div id="cats">Котики кругом</div>
+
+    <p lang="jp">
+    <ruby>
+    ありがとう<rt>Arigatō</rt>
+    </ruby>
+    <ruby>
+    おはよう<rt>Ohayō</rt>
+    </ruby>
+
+    <pre>
+    <code>
+        #include <iostream>
+        int main(void) {
+            std::cout << "Hello world";
+            return 0;
+        }
+    <code>
+<pre>
+</p>
+<ol>
+    <li>08:20 - 09:50</li>
+    <li>10:00 - 11:30</li>
+        <ul>Перемена 40 минут</ul>
+    <li>12:10 - 13:40</li>
+    <li>13:50 - 15:20</li>
+        <ul>Перемена 20 минут</ul>
+    <li>17:20 - 18:50</li>
+    <li>19:00 - 20:30</li>
+
+    <ul>
+        <li>Элемент 1</li>
+        <li>Элемент 2</li>
+        <li>Элемент 3</li>
+    </ul>
+    </li>
+</ol>
+
+<img src="img/ваня.jpg" alt="vanya">
+<img src="img/ирина.jpg" alt="ирина">
+<img src="img/саня.jpg" alt="sanya">
+<img src="img/834601875.jpg" alt="leha">
+<img src="img/ed59c1es-960.jpg" alt="iluha">
+
+<table>
+<thead>
+    <tr>
+        <td>Банк</td>
+        <td>Паша</td>
+        <td>Саша</td>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>АльфаБанк</td>
+        <td>3 700</td>
+        <td>121 021</td>
+    </tr>
+</tbody>
+</table>
+
+    <form action="">
+        <div>
+        <label for="Name">name</label>
+        <input type="text" name="Name" id="Name">
+        <label for="Surname">surname</label>
+        <input type="text" name="Surname" id="Surname">
+        </div>
+        <div>
+            <b>Sex</b>
+        <input name="sex" type="radio" value="male">Male
+        <input name="sex" type="radio" value="female">Female
+        <input name="sex" type="radio" value="no selected">No select
+
+        </div>
+        <label for="color">color search</label><input type="color" name="color" id="color">
+        <label for="yeargraduate">Start graduate</label><input type="number" name="yeargraduate" id="yeargraduate"
+        min="2010" max="2026">
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+        </div>
+        <div>
+            <label for="phone">Number phone</label>
+            <input type="tel" name="phone" id="email">
+        </div>    
+    </form>
+<details>
+    <summary>Спойлер</summary>
+    <p>Убийца — садовник!</p>
+</details>
+</body>
+</html>
