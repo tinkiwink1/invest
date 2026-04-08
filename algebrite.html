@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.45/dist/katex.css" integrity="sha384-DLNWBifkkOES5azVMtIZ7RYukF2HBwDMBcPyDl6VnXTdJKlv5aO1s6mnOLE0QUyP" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.45/dist/katex.js" integrity="sha384-SReR3XDzHJ+xHgprjPZ5oBp+3gHv4arv/iWnz2PGnkUH8lAYzPIIxY0C+I6F2G/o" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div id="table"></div>
+    <script src="dist/algebrite.bundle-for-browser.js"></script>
+    <script src="dist/math.js"></script>
+    
+    <script>
+        const funcs = [
+            'const',
+            'x',
+            'x^n',
+            'sqrt(x)',
+            'a^x',
+            'e^x',
+            'sin(x)',
+            'cos(x)',
+            'tan(x)',
+            'arcsin(x)',
+            'arccos(x)',
+            'arctan(x)',
+            'log(x)',
+            'log(x, a)'
+        ];
+
+        function parseTex(func) {
+            return katex.renderToString(math.parse(func).toTex());
+        }
+
+        window.onload = () => {
+            let table = '<table><thead>';
+            table += '<tr><td>Function</td><td>High</td></tr></thead><tbody>';
+            for (let func of funcs) {
+                table += '<tr>';
+                table += '<td>' + parseTex(func) + '</td>';
+                table += '<td>' + parseTex(Algebrite.run('d('+func+')')) + '</td>';
+                table += '</tr>';
+            };
+            table += '</tbody></table>'
+            document.querySelector("#table").innerHTML = table;
+        }
+    </script>
+
+
+</body>
+</html>
