@@ -174,5 +174,26 @@
     <summary>Спойлер</summary>
     <p>Убийца — садовник!</p>
 </details>
+
+
+<!--функция для всплывающего окна при нажатии на кнопку-->
+<script>
+    function generateDiary(e) {
+        e.preventDefault();
+        let newWin = window.open("about:blank", "Дневник", "width=400, heigth=300");
+        let template = `
+            <h1>Дневник</h1>
+            <div>Ученик${document.querySelector('[name=gender]:checked').value == "m" ? 'ка' : 'цы'}
+                ${document.querySelector('#class').value} класса </div>
+                <div>${document.querySelector('#school').value} ${document.querySelector('locality').value}
+                    </div>
+
+                <div>${document.querySelector('#fio').value}</div>    
+               `
+    }
+</script>
+
+
+
 </body>
 </html>
