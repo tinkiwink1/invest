@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+   * {
+    margin: 0;
+    padding: 0;
+    }
+/* Сделаем родителем все поле */
+#wrapper {
+    position: relative;
+}
+/* окно чата делается на флексах */
+#chat {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    margin-bottom: 60px;
+}
+/* Поле ввода с кнопкой */
+/* Делаем высотой 60 и на флексах */
+#send {
+    width: 100%;
+    position: fixed;
+    height: 60px;
+    display: flex;
+    bottom: 0;
+}
+/* Поле ввода делаем по ширине все оставшееся пространство */
+#message {
+    font-size: 20px;
+    line-height: 60px;
+    width: inherit;
+}
+/* Красим кнопку, делаем её шириной 150 пикселей, увеличиваем размер шрифта и добавим курсор */
+#send_message {
+    background-color: rgb(56,79,56);
+    width: 150px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+/* Блок с сообщением делаем закос под viber */
+.message {
+    background-color: #ccc;
+    /* border: 1px solid #999; */
+    padding: 10px;
+    margin: 10px;
+    /* border-radius: 10px; */
+    width: fit-content;
+}
+#chat {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    margin-bottom: 60px;
+}
+
+.friend {
+    background-color: #ccc;
+    border: 1px solid #999;
+}
+.me {
+    background-color: #7282bf;
+    border: 1px solid #261591;
+    align-self: flex-end;
+}
+.author {
+    display: block;
+    font-weight: bold;
+    text-decoration-line: underline;
+    padding-bottom: 10px;
+    font-size: large;
+}
+.time {
+    font-size: x-small;
+    display: block;
+    text-align: right;
+    padding-top: 10px;
+}
+
+</style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="chat">
+            <div class="message">
+                Текстовое сообщение
+            </div>
+        </div>
+        <div id="send">
+            <input type="text" id="message">
+            <input type="button" value="Отправить" id="send_message">
+        </div>
+    </div>
+    
+    <script>
+        
+        const me = 'Антон Викторович'
+        function newMessage({id, message, time, author}) {
+            //Создадим новый блок
+            let div = document.createElement('div');
+            div.id = 'message-' + id;
+            if (author === undefined || author === me) {
+                div.className = "message me"
+            } else {
+                div.className = "message friend"
+            }
+            let authorSpan;
+            if (author !== me) {
+                authorSpan = document.createElement('span');
+                authorSpan.className = 'author';
+                authorSpan.textContent = author;
+                div.appendChild(authorSpan);
+            }
+            textSpan = document.createElement('span');
+            textSpan.className = 'text';
+            textSpan.textContent = message;
+            div.appendChild(textSpan);
+
+            let timeSpan;
+            timeSpan = document.createElement('span')
+            timeSpan.className = 'time';
+            
+            date = new Date(time * 1000);
+            timeSpan.textContent = ` 
+                ${date.getHours()}:
+                ${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}:
+                ${date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()}
+            `;
+            div.appendChild(timeSpan);
+
+
+        
+            //Добавим сообщение в окно чата
+            document.querySelector('#chat').appendChild(div);
+            window.scrollTo({
+                top: Math.ceil(document.querySelector('#chat').scrollHeight),
+                behavior: 'smooth',
+            });
+
+        }
+        function sendMessage (e) {
+            let message = document.querySelector('#message');
+            //Получим сообщение из поля ввода
+            let text = message.value;
+            //Сделаем запрет на отправку пустого сообщения
+            if (text.trim().length > 0) {
+                //Если сообщение не пусто, то отправим его в окно чата и очистим поле ввода
+                sendMessageToServer(text, me)
+                message.value = "";
+            }
+        }
+        //Ловим событие нажатия на кнопку отправить сообщение и событие нажатия клавиши в поле ввода 
+
+        //Сделаем отправку по кнопке Enter
+        function sendMessageKeyUp (e) {
+            if (e.code === 'Enter') {
+                sendMessage();
+            }
+        }
+        //Ловим событие нажатия на кнопку отправить сообщение и событие нажатия клавиши в поле ввода 
+        window.onload = () => {
+            localStorage.setItem('time', Math.floor(Date.now()/1000));
+            document.querySelector('#send_message').onclick = sendMessage;
+            document.querySelector('#message').onkeyup = sendMessageKeyUp;
+            getMessageFromServer(0);
+            setInterval(() => {
+                getMessageFromServer(localStorage.getItem('time') - 5);
+            }, 2000)
+
+        }
+
+        function getMessageFromServer(sec) {
+            let xmlhttp = new XMLHttpRequest();
+            let url = 'https://chat.9pr.ru/message/' + sec;
+            xmlhttp.open('GET', url);
+            xmlhttp.send(null);
+            xmlhttp.onload = () => {
+                let data = xmlhttp.responseText;
+                data = JSON.parse(data);
+                if (data.error !== undefined) {
+                    console.error(data.error);
+                } else {
+                    for (let i in data) {
+                        if (document.querySelector('#message-'+data[i].id) == null) {
+                            newMessage(data[i]);
+                        }
+                    }
+                }
+            }
+        }
+        function sendMessageToServer(message, author) {
+            let xmlhttp = new XMLHttpRequest();
+            let url = 'https://chat.9pr.ru/message';
+            xmlhttp.open('POST', url);
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            let send = {
+                author, message
+            }
+            xmlhttp.send(JSON.stringify(send));
+            xmlhttp.onload = () => {
+                let data = xmlhttp.responseText;
+                data = JSON.parse(data);
+                if (data.error !== undefined) {
+                    console.error(data.error);
+                } else {
+                    newMessage({id: data.id, message, author: me, time: Math.floor(Date.now()/1000)});
+                }
+            }
+        }
+    </script>
+    
+</body>
+</html>
